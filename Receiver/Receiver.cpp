@@ -22,6 +22,9 @@ bool BindAndListen(SOCKET serverSocket, sockaddr_in& serverAddr) {
 }
 
 int main() {
+    // Starting server.
+    std::cout << "Starting the server.." << std::endl;
+
     // Initialize Winsock
     WSADATA wsaData;
     int result = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -62,6 +65,8 @@ int main() {
         WSACleanup();
         return 1;
     }
+    // Starting server.
+    std::cout << "Waiting For connections.." << std::endl;
 
     // Accept incoming connections
     sockaddr_in clientAddr;

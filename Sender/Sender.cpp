@@ -18,9 +18,6 @@ int main() {
     std::wstring server_ip = L"127.0.0.1"; // Server IP address as wide string
     int server_port = 8000; // Server port
 
-    // Data to send
-    std::string data = "Hello, server!";
-
     // Create socket
     SOCKET sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (sockfd == INVALID_SOCKET) {
@@ -52,17 +49,14 @@ int main() {
 
     // Send data to the server
     // Loop to ask user if they want to send data
-    std::string choice;
+    std::string choice = "Hello Server!!";
     do {
-        std::cout << "Enter the data string - or send C to close: ";
-        std::cin >> choice;
+        
         int count = 0;
 
         {
-            // Data to send
-            std::string data = choice;
 
-            int bytesSent = send(sockfd, data.c_str(), data.size(), 0);
+            int bytesSent = send(sockfd, choice.c_str(), choice.size(), 0);
             if (bytesSent == SOCKET_ERROR) {
                 std::cerr << "Send failed: " << WSAGetLastError() << std::endl;
                 closesocket(sockfd);
@@ -70,6 +64,9 @@ int main() {
                 return 1;
             }
             std::cout << "Data sent successfully\n";
+
+            std::cout << "Enter the data string - or send C to close: ";
+            std::cin >> choice;
 
             //// Receive data from the server
             //const int bufferSize = 1024;
