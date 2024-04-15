@@ -21,6 +21,17 @@ bool BindAndListen(SOCKET serverSocket, sockaddr_in& serverAddr) {
     return true;
 }
 
+int SendDataToClient(const std::string& str,  SOCKET clientSocket) {
+    int bytesSent = send(clientSocket, str.c_str(), str.size(), 0);
+    if (bytesSent == SOCKET_ERROR) {
+        std::cerr << "Send failed: " << WSAGetLastError() << std::endl;
+        closesocket(clientSocket);
+        WSACleanup();
+        return 1;
+    }
+    return 0;
+}
+
 int main() {
     // Starting server.
     std::cout << "Starting the server.." << std::endl;
@@ -35,7 +46,7 @@ int main() {
 
     // Server details
     std::wstring server_ip = L"127.0.0.1"; // Server IP address as wide string
-    int server_port = 8000; // Server port
+    int server_port = 8080; // Server port
 
     // Create socket
     SOCKET serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -79,6 +90,11 @@ int main() {
         return 1;
     }
 
+    std::string choice = "Hello From Server!!";
+    SendDataToClient(choice, clientSocket);
+    
+
+
     // Receive data from the client
     //int timeout_ms = 5000; // 5 seconds
     //setsockopt(clientSocket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout_ms, sizeof(timeout_ms));
@@ -94,10 +110,17 @@ int main() {
             WSACleanup();
             return 1;
         }
-        // Null-terminate the received data
-        buffer[bytesReceived] = '\0';
-        // Print the received data
-        std::cout << "Received data from the client: " << buffer << std::endl;
+        else if (bytesReceived > 0)
+        {
+            // Null-terminate the received data
+            buffer[bytesReceived] = '\0';
+            // Print the received data
+            std::cout << "Received data from the client: " << buffer << std::endl;
+
+            // Let the client know data was received 
+            // SendDataToClient("Data Received", clientSocket);
+        }
+        
     } while (strcmp("C", buffer) != 0);
 
     // Close sockets

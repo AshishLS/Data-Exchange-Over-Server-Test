@@ -16,7 +16,7 @@ int main() {
 
     // Server details
     std::wstring server_ip = L"127.0.0.1"; // Server IP address as wide string
-    int server_port = 8000; // Server port
+    int server_port = 8080; // Server port
 
     // Create socket
     SOCKET sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -50,6 +50,8 @@ int main() {
     // Send data to the server
     // Loop to ask user if they want to send data
     std::string choice = "Hello Server!!";
+    const int bufferSize = 1024;
+    char buffer[bufferSize];
     do {
         
         int count = 0;
@@ -67,23 +69,6 @@ int main() {
 
             std::cout << "Enter the data string - or send C to close: ";
             std::cin >> choice;
-
-            //// Receive data from the server
-            //const int bufferSize = 1024;
-            //char buffer[bufferSize];
-            //int timeout_ms = 5000; // 5 seconds
-            //setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout_ms, sizeof(timeout_ms));
-            //int bytesReceived = recv(sockfd, buffer, bufferSize, 0);
-            //if (bytesReceived == SOCKET_ERROR) {
-            //    std::cerr << "Receive failed: " << WSAGetLastError() << std::endl;
-            //    /*closesocket(sockfd);
-            //    WSACleanup();
-            //    return 1;*/
-            //}
-            // Null-terminate the received data
-            //buffer[bytesReceived] = '\0';
-            // Print the received data
-            //std::cout << "Received data from the server: " << buffer << std::endl;
         }
 
     } while (std::strcmp("C", choice.c_str()) != 0);

@@ -2,7 +2,7 @@ import socket
 
 # Server configuration
 HOST = '127.0.0.1'  # The server's hostname or IP address
-PORT = 8000         # The port used by the server
+PORT = 8080         # The port used by the server
 
 # Create a socket object
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
